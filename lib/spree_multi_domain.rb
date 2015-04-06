@@ -1,3 +1,6 @@
 require 'sass/rails'
 require 'spree_core'
+require 'spree_api'
+require 'spree_frontend'
+require 'spree_backend'
 require 'spree_multi_domain/engine'
