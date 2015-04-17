@@ -6,7 +6,7 @@ Spree::PaymentMethod.class_eval do
     result = all.select do |p|
       p.active &&
         (p.environment == Rails.env || p.environment.blank?) &&
-        (store.nil? || store.payment_methods.empty? || store.payment_methods.include?(p)) &&
+        ((store.present?) && (p.store_id == store.id)) &&
         (p.display_on == display_on.to_s || p.display_on.blank?)
     end
   end
