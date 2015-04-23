@@ -4,11 +4,7 @@ class Spree::Admin::StoresController < Spree::Admin::ResourceController
   before_filter :load_shipping_methods
 
   def index
-    @stores = @stores.ransack({ name_or_domains_or_code_cont: params[:q] }).result if params[:q]
-    @stores = @stores.where(id: params[:ids].split(',')) if params[:ids]
-    @stores = @stores.where(user_id: spree_current_user.id)
-
-    respond_with(@stores) do |format|
+    respond_with(current_store) do |format|
       format.html
       format.json
     end
@@ -16,10 +12,10 @@ class Spree::Admin::StoresController < Spree::Admin::ResourceController
 
   private
     def load_payment_methods
-      @payment_methods = Spree::PaymentMethod.all
+      @payment_methods = Spree::PaymentMethod.all.filter_store(current_store)
     end
 
     def load_shipping_methods
-      @shipping_methods = Spree::ShippingMethod.all
+      @shipping_methods = Spree::ShippingMethod.all.filter_store(current_store)
     end
 end
